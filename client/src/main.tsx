@@ -4,8 +4,8 @@ import '@mantine/core/styles.css';
 import { RouterProvider } from 'react-router-dom'
 import routes from './routes'
 import { Suspense } from 'react'
-import Loading from './components/loading'
 import { MantineProvider } from '@mantine/core'
+import Loading from './components/Loading';
 
 createRoot(document.getElementById('root')!).render(
   <MantineProvider>
