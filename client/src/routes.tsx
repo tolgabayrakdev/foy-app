@@ -1,19 +1,14 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import NotFound from "./pages/NotFound";
 
-const HomePage = lazy(() => import("./pages/Home"));
+const HomePage = lazy(() => import("./pages/home"));
 
 
 const routes = createBrowserRouter([
     {
-        path: "*",
-        element: <NotFound />
-    },
-    {
         path: "/",
         element: <HomePage />
-    },
+    }
 ], {
     future: {
         v7_fetcherPersist: true,
@@ -21,8 +16,8 @@ const routes = createBrowserRouter([
         v7_partialHydration: true,
         v7_relativeSplatPath: true,
         v7_skipActionErrorRevalidation: true
+
     }
-}
-);
+});
 
 export default routes;
