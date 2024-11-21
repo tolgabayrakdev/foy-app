@@ -1,5 +1,18 @@
+import { Button, Flex, Text } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+
 export default function NotFound() {
+    const navigate = useNavigate();
     return (
-        <div>404 - not found</div>
+        <Flex
+            justify="center"
+            align="center"
+            direction="column"
+            style={{ minHeight: '100vh' }}
+        >
+            <Text size="xl">404 Not Found</Text>
+            <Button variant="white" onClick={() => navigate(-1)}>Geri Dön</Button>
+
+        </Flex>
     )
 }
