@@ -1,8 +1,8 @@
 import React from 'react';
-import { TextInput, PasswordInput, Button, Anchor, Paper, Title, Container } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Anchor, Paper, Title, Flex, Container } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-const SignIn = () => {
+const SignUp = () => {
     // Form yönetimi için useForm kullanıyoruz
     const form = useForm({
         initialValues: {
@@ -17,7 +17,7 @@ const SignIn = () => {
         },
     });
 
-    // Login işlemi burada yapılacak
+    // Signup işlemi burada yapılacak
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (form.validate().hasErrors) {
@@ -30,43 +30,55 @@ const SignIn = () => {
     };
 
     return (
-        <Container size={420} my={40}>
-            <Paper>
-                <Title ta="center" mb={30}>Giriş Yap</Title>
+        <Flex
+            justify="center"
+            align="center"
+            style={{ minHeight: '100vh' }}
+        >
+            <Container size={420} w="100%">
+                <Paper p="lg" radius="md">
+                    <Title ta="center" mb={30}>Kayıt Ol</Title>
 
-                <form onSubmit={handleSubmit}>
-                    <TextInput
-                        label="Kullanıcı Adı"
-                        placeholder="username"
-                        required
-                        {...form.getInputProps('username')}
-                    />
+                    <form onSubmit={handleSubmit}>
+                        <TextInput
+                            label="Kullanıcı Adı"
+                            placeholder="username"
+                            required
+                            {...form.getInputProps('username')}
+                        />
 
-                    <TextInput
-                        label="Email"
-                        placeholder="youremail@example.com"
-                        required
-                        mt="md"
-                        {...form.getInputProps('email')}
-                    />
+                        <TextInput
+                            label="Email"
+                            placeholder="youremail@example.com"
+                            required
+                            mt="md"
+                            {...form.getInputProps('email')}
+                        />
 
-                    <PasswordInput
-                        label="Şifre"
-                        placeholder="Şifrenizi girin"
-                        required
-                        mt="md"
-                        {...form.getInputProps('password')}
-                    />
+                        <PasswordInput
+                            label="Şifre"
+                            placeholder="Şifrenizi girin"
+                            required
+                            mt="md"
+                            {...form.getInputProps('password')}
+                        />
 
-                    <Button fullWidth mt="xl" type="submit">Giriş Yap</Button>
-                </form>
+                        <Button fullWidth mt="xl" type="submit">Kayıt Ol</Button>
+                    </form>
 
-                <Anchor ta="center" href="/sign-in" mt="sm" size="sm" display="block">
-                    Zaten bir hesabın var mı?
-                </Anchor>
-            </Paper>
-        </Container>
+                    <Anchor 
+                        ta="center" 
+                        href="/sign-in" 
+                        mt="sm" 
+                        size="sm" 
+                        style={{ display: 'block', textAlign: 'center' }}
+                    >
+                        Zaten bir hesabın var mı? Giriş yap
+                    </Anchor>
+                </Paper>
+            </Container>
+        </Flex>
     );
 };
 
-export default SignIn;
+export default SignUp;

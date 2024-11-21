@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, PasswordInput, Button, Anchor, Paper, Title, Container } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Anchor, Paper, Title, Container, Flex } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 const SignIn = () => {
@@ -27,34 +27,46 @@ const SignIn = () => {
     };
 
     return (
-        <Container size={420} my={40}>
-            <Paper>
-                <Title ta="center" mb={30}>Giriş Yap</Title>
+        <Flex
+            justify="center"
+            align="center"
+            style={{ minHeight: '100vh' }}
+        >
+            <Container size={420} w="100%">
+                <Paper p="lg" radius="md">
+                    <Title ta="center" mb={30}>Giriş Yap</Title>
 
-                <form onSubmit={handleSubmit}>
-                    <TextInput
-                        label="Email"
-                        placeholder="youremail@example.com"
-                        required
-                        {...form.getInputProps('email')}
-                    />
+                    <form onSubmit={handleSubmit}>
+                        <TextInput
+                            label="Email"
+                            placeholder="youremail@example.com"
+                            required
+                            {...form.getInputProps('email')}
+                        />
 
-                    <PasswordInput
-                        label="Şifre"
-                        placeholder="Şifrenizi girin"
-                        required
-                        mt="md"
-                        {...form.getInputProps('password')}
-                    />
+                        <PasswordInput
+                            label="Şifre"
+                            placeholder="Şifrenizi girin"
+                            required
+                            mt="md"
+                            {...form.getInputProps('password')}
+                        />
 
-                    <Button fullWidth mt="xl" type="submit">Giriş Yap</Button>
-                </form>
+                        <Button fullWidth mt="xl" type="submit">Giriş Yap</Button>
+                    </form>
 
-                <Anchor ta="center" href="/sign-up" mt="sm" size="sm" display="block">
-                    Hesabınız yok mu? Kayıt olun
-                </Anchor>
-            </Paper>
-        </Container>
+                    <Anchor 
+                        ta="center" 
+                        href="/sign-up" 
+                        mt="sm" 
+                        size="sm" 
+                        style={{ display: 'block', textAlign: 'center' }}
+                    >
+                        Hesabınız yok mu? Kayıt olun
+                    </Anchor>
+                </Paper>
+            </Container>
+        </Flex>
     );
 };
 
