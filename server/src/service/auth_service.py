@@ -1,33 +1,54 @@
+from marshmallow import ValidationError
+
 from ..model import db, User
 from ..exceptions import AppException
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..helper.jwt_helper import create_access_token, create_refresh_token, decode_token
+from ..schema.auth_schema import UserRegistrationSchema, LoginSchema
 import jwt
+
+schema = UserRegistrationSchema()
+login_schema = LoginSchema()
 
 class AuthService:
     @staticmethod
     def register(username: str, email: str, password: str):
-        if User.query.filter_by(username=username).first():
-            raise AppException("User already exists", 400)
+        try:
+            validated_data = schema.load({"username": username, "email": email, "password": password})
+            username = validated_data['username']
+            email = validated_data['email']
+            password = validated_data['password']
 
-        if User.query.filter_by(email=email).first():
-            raise AppException("Email already exists", 400)
+            if User.query.filter_by(username=username).first():
+                raise AppException("User already exists", 400)
 
-        hashed_password = generate_password_hash(password)
-        user = User(username=username, email=email, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        return user
+            if User.query.filter_by(email=email).first():
+                raise AppException("Email already exists", 400)
+
+            hashed_password = generate_password_hash(password)
+            user = User(username=username, email=email, password=hashed_password)
+            db.session.add(user)
+            db.session.commit()
+            return user
+        except ValidationError as e:
+            raise AppException(e.messages, 400)
 
     @staticmethod
     def login(email: str, password: str):
-        user = User.query.filter_by(email=email).first()
-        if not user or not check_password_hash(user.password, password):
-            raise AppException("Invalid username or password", 401)
+        try:
+            validated_data = login_schema.load({"email": email, "password": password})
+            email = validated_data['email']
+            password = validated_data['password']
 
-        access_token = create_access_token(user.id)
-        refresh_token = create_refresh_token(user.id)
-        return {"access_token": access_token, "refresh_token": refresh_token}
+            user = User.query.filter_by(email=email).first()
+            if not user or not check_password_hash(user.password, password):
+                raise AppException("Invalid email or password", 401)
+
+            access_token = create_access_token(user.id)
+            refresh_token = create_refresh_token(user.id)
+            return {"access_token": access_token, "refresh_token": refresh_token}
+        except ValidationError as e:
+            raise AppException(e.messages, 400)
 
     @staticmethod
     def verify(token: str):
