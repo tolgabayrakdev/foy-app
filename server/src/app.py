@@ -1,6 +1,9 @@
 from flask import Flask, jsonify
-from model import db
-from exceptions import AppException
+from .model import db
+from .exceptions import AppException
+
+# controllers
+from .controller.auth_controller import auth_controller
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://root:root@localhost:5432/postgres"
@@ -15,6 +18,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+app.register_blueprint(auth_controller, url_prefix="/api/auth")
 
 if __name__ == "__main__":
     app.run(debug=True)
