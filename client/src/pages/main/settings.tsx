@@ -136,7 +136,7 @@ function Settings() {
     <Box mx="auto" px="md" maw={800}>
       <Title order={1} mb="lg">Hesap Ayarları</Title>
       <Stack gap="lg">
-        <Paper shadow="xs" p="xl" withBorder>
+        <Paper p="xl" withBorder>
           <Stack>
             <Box mb="md">
               <Title order={2} size="h3" mb={5}>
@@ -177,7 +177,7 @@ function Settings() {
 
         <Divider />
 
-        <Paper shadow="xs" p="xl" withBorder>
+        <Paper p="xl" withBorder>
           <Stack>
             <Box mb="md">
               <Title order={2} size="h3" mb={5}>
