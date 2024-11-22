@@ -12,8 +12,18 @@ function MainLayout() {
   
   const userEmail = "kullanici@email.com";
 
-  const handleLogout = () => {
-    console.log("Çıkış yapılıyor...");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (response.ok) {
+        navigate('/sign-in');
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   const navItems = [
