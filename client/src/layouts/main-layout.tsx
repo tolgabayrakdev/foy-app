@@ -3,14 +3,15 @@ import { useDisclosure } from '@mantine/hooks';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import AuthProvider from '../providers/auth-provider';
 import { HomeIcon, LogOut, NotebookTabsIcon, Settings, Users2Icon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 function MainLayout() {
+  const [userEmail, setUserEmail] = useState("");
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const userEmail = "kullanici@email.com";
+
 
   const handleLogout = async () => {
     try {
@@ -25,6 +26,24 @@ function MainLayout() {
       throw error;
     }
   };
+
+  const handleUserVerify = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/auth/verify', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();      
+      if (response.ok) {
+        setUserEmail(data.email);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+  useEffect(() => {
+    handleUserVerify();
+  }, [])
 
   const navItems = [
     {
@@ -77,11 +96,11 @@ function MainLayout() {
             <Menu.Dropdown>
               <Menu.Item
                 leftSection={<Settings style={{ width: rem(14), height: rem(14) }} />}
-                onClick={() => navigate('/settings')}
+                onClick={() => navigate('/main/settings')}
               >
                 Ayarlar
               </Menu.Item>
-              
+
               <Menu.Item
                 leftSection={<LogOut style={{ width: rem(14), height: rem(14) }} />}
                 onClick={handleLogout}
