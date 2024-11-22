@@ -24,8 +24,8 @@ def login():
 @auth_controller.route("/logout", methods=["POST"])
 def logout():
     response = make_response(jsonify({"message": "Logged out"}))
-    response.delete_cookie("access_token")
-    response.delete_cookie("refresh_token")
+    response.delete_cookie("access_token", httponly=True, samesite="none", secure=True)
+    response.delete_cookie("refresh_token", httponly=True, samesite="none", secure=True)
     return response, 200
 
 @auth_controller.route("/verify", methods=["GET"])

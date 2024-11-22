@@ -10,6 +10,7 @@ pyjwt = "*"
 flask-sqlalchemy = "*"
 bcrypt = "*"
 marshmallow = "*"
+flask-cors = "*"
 
 [dev-packages]
 
