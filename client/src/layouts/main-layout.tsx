@@ -40,7 +40,7 @@ export default function MainLayout() {
 
   return (
     <AppShell
-      header={{ height: 60 }}
+      header={{ height: 50 }}
       navbar={{
         width: 250,
         breakpoint: 'sm',
@@ -53,7 +53,7 @@ export default function MainLayout() {
           <Group>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-            <Title order={2}>Mantine</Title>
+            <Title order={2}>Foy</Title>
           </Group>
 
           <Menu shadow="md" width={200}>
