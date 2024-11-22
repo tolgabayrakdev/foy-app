@@ -45,8 +45,24 @@ function AuthProvider<P extends WithAuthProps>(WrappedComponent: ComponentType<P
             }
         };
 
-        const handleRefreshDecline = () => {
+        const handleLogout = async () => {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/api/auth/logout", {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+                
+                if (response.ok) {
+                    navigate('/sign-in');
+                }
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        };
+
+        const handleRefreshDecline = async () => {
             setShowRefreshModal(false);
+            await handleLogout();
             setLoading(false);
             setAccessDenied(true);
         };
