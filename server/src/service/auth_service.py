@@ -51,7 +51,7 @@ class AuthService:
             raise AppException(e.messages, 400)
 
     @staticmethod
-    def verify(token: str):
+    def verify(token):
         if not token:
             raise AppException("Unauthorized", 401)
         try:
@@ -67,7 +67,7 @@ class AuthService:
             raise AppException(str(e), 500)
 
     @staticmethod
-    def refresh(refresh_token: str):
+    def refresh(refresh_token):
         if not refresh_token:
             raise AppException("Unauthorized", 401)
         try:
