@@ -1,9 +1,10 @@
 import { AppShell, Burger, Group, Title, Menu, Button, rem, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconSettings, IconLogout, IconUsers, IconNotes, IconHome } from '@tabler/icons-react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import AuthProvider from '../providers/auth-provider';
+import { HomeIcon, LogOut, NotebookTabsIcon, Settings, Users2Icon } from 'lucide-react';
 
-export default function MainLayout() {
+function MainLayout() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const navigate = useNavigate();
@@ -19,22 +20,22 @@ export default function MainLayout() {
     {
       label: 'Main',
       path: '/main',
-      icon: <IconHome style={{ width: rem(16), height: rem(16) }} />
+      icon: <HomeIcon style={{ width: rem(16), height: rem(16) }} />
     },
     {
       label: 'Kullanıcılar',
       path: '/users',
-      icon: <IconUsers style={{ width: rem(16), height: rem(16) }} />
+      icon: <Users2Icon style={{ width: rem(16), height: rem(16) }} />
     },
     {
       label: 'Notlar',
       path: '/notes',
-      icon: <IconNotes style={{ width: rem(16), height: rem(16) }} />
+      icon: <NotebookTabsIcon style={{ width: rem(16), height: rem(16) }} />
     },
     {
       label: 'Ayarlar',
       path: '/main/settings',
-      icon: <IconSettings style={{ width: rem(16), height: rem(16) }} />
+      icon: <Settings style={{ width: rem(16), height: rem(16) }} />
     }
   ];
 
@@ -65,14 +66,14 @@ export default function MainLayout() {
 
             <Menu.Dropdown>
               <Menu.Item
-                leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}
+                leftSection={<Settings style={{ width: rem(14), height: rem(14) }} />}
                 onClick={() => navigate('/settings')}
               >
                 Ayarlar
               </Menu.Item>
               
               <Menu.Item
-                leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
+                leftSection={<LogOut style={{ width: rem(14), height: rem(14) }} />}
                 onClick={handleLogout}
                 color="red"
               >
@@ -92,7 +93,7 @@ export default function MainLayout() {
             onClick={() => navigate(item.path)}
             styles={{
               root: {
-                '&[data-active]': {
+                '&[dataActive]': {
                   backgroundColor: 'var(--mantine-primary-color-light)',
                 }
               }
@@ -106,3 +107,5 @@ export default function MainLayout() {
     </AppShell>
   );
 }
+
+export default AuthProvider(MainLayout);
