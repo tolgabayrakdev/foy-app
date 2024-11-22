@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from ..exceptions import AppException
 
 SECRET_KEY = "your-very-secret-key"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 def create_access_token(user_id):
