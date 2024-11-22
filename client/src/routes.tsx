@@ -6,6 +6,10 @@ const NotFoundPage = lazy(() => import("./pages/error/not-found"));
 const SignInPage = lazy(() => import("./pages/auth/sign-in"));
 const SignUpPage = lazy(() => import("./pages/auth/sign-up"));
 
+const MainLayout = lazy(() => import("./layouts/main-layout"));
+const MainIndexPage = lazy(() => import("./pages/main/index"));
+const MainSettingsPage = lazy(() => import("./pages/main/settings"));
+
 const routes = createBrowserRouter([
     {
         path: "/",
@@ -22,6 +26,14 @@ const routes = createBrowserRouter([
     {
         path: "/sign-up",
         element: <SignUpPage />
+    },
+    {
+        path: "/main",
+        element: <MainLayout />,
+        children: [
+            { path: "", element: <MainIndexPage />, index: true },
+            { path: "settings", element: <MainSettingsPage /> }
+        ]
     }
 ], {
     future: {
