@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from .model import db
 from .exceptions import AppException
 
@@ -17,6 +18,8 @@ def handle_app_exception(error):
 db.init_app(app)
 with app.app_context():
     db.create_all()
+
+CORS(app, supports_credentials=True)
 
 app.register_blueprint(auth_controller, url_prefix="/api/auth")
 

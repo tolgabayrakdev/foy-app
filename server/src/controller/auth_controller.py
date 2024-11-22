@@ -16,8 +16,8 @@ def login():
     tokens = AuthService.login(data["email"], data["password"])
 
     response = make_response(jsonify(tokens))
-    response.set_cookie("access_token", tokens["access_token"], httponly=True)
-    response.set_cookie("refresh_token", tokens["refresh_token"], httponly=True)
+    response.set_cookie("access_token", tokens["access_token"], httponly=True, samesite="none", secure=True)
+    response.set_cookie("refresh_token", tokens["refresh_token"], httponly=True, samesite="none", secure=True)
 
     return response, 200
 
@@ -39,7 +39,7 @@ def refresh():
     refresh_token = request.cookies.get("refresh_token")
     tokens = AuthService.refresh(refresh_token)
     response = make_response(jsonify(tokens))
-    response.set_cookie("access_token", tokens["access_token"], httponly=True)
+    response.set_cookie("access_token", tokens["access_token"], httponly=True, samesite="none", secure=True)
     return response, 200
 
 
