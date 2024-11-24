@@ -1,5 +1,5 @@
 import { useEffect, useState, ComponentType } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Modal, Button, Text, Group } from '@mantine/core';
 import Loading from '../components/Loading';
 

@@ -1,6 +1,6 @@
 import { AppShell, Burger, Group, Title, Menu, Button, rem, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router';
 import AuthProvider from '../providers/auth-provider';
 import { HomeIcon, LogOut, NotebookTabsIcon, Settings, Users2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
