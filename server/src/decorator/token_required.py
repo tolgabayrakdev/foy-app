@@ -12,7 +12,7 @@ def token_required(f):
             return jsonify({"message": "Token is missing"}), 401
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-            request.user = payload  # Kullanıcı bilgilerini request e aktarıldı.
+            setattr(request, 'user', payload)
         except jwt.ExpiredSignatureError:
             return jsonify({"message": "Token has expired"}), 401
         except jwt.InvalidTokenError:
