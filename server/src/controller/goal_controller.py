@@ -16,23 +16,29 @@ def create_goal():
 @token_required
 def list_goals():
     goals = GoalService.list_goals(request.user["user_id"])
-    return jsonify(goals), 200
+    return jsonify([goal.to_dict() for goal in goals]), 200
 
 @goal_controller.route("/<int:id>", methods=["GET"])
 @token_required
 def get_goal(id):
     goal = GoalService.get_goal(id)
-    return jsonify(goal), 200
+    return jsonify(goal.to_dict()), 200
 
 @goal_controller.route("/<int:id>", methods=["PUT"])
 @token_required
 def update_goal(id):
     data = request.get_json()
     goal = GoalService.update_goal(data, id)
-    return jsonify(goal), 200
+    return jsonify(goal.to_dict()), 200
 
 @goal_controller.route("/<int:id>", methods=["DELETE"])
 @token_required
 def delete_goal(id):
     GoalService.delete_goal(id)
     return jsonify({"message": "Goal deleted"}), 200
+
+@goal_controller.route("/<int:id>/progress", methods=["PATCH"])
+def update_goal_progress(id):
+    data = request.get_json()
+    goal = GoalService.update_completion_percentage(id, data["completion_percentage"])
+    return jsonify(goal.to_dict()), 200
