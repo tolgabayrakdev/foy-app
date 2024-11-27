@@ -52,16 +52,6 @@ function MainLayout() {
       icon: <HomeIcon style={{ width: rem(16), height: rem(16) }} />
     },
     {
-      label: 'Kullanıcılar',
-      path: '/users',
-      icon: <Users2Icon style={{ width: rem(16), height: rem(16) }} />
-    },
-    {
-      label: 'Notlar',
-      path: '/notes',
-      icon: <NotebookTabsIcon style={{ width: rem(16), height: rem(16) }} />
-    },
-    {
       label: 'Ayarlar',
       path: '/main/settings',
       icon: <Settings style={{ width: rem(16), height: rem(16) }} />
