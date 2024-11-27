@@ -20,7 +20,7 @@ const NotFound = lazy(() => import('./pages/error/not-found'));
 createRoot(document.getElementById('root')!).render(
   <MantineProvider>
     <Suspense fallback={<Loading />}>
-    <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route
             path='/' element={<Home />} />
