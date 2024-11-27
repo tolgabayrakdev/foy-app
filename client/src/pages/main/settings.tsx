@@ -65,7 +65,7 @@ export default function Settings() {
 
     const handleUserUpdate = async (values: typeof userForm.values) => {
         console.log(values);
-        
+
         try {
             const res = await fetch('http://127.0.0.1:5000/api/update-user', {
                 method: 'PUT',
@@ -84,7 +84,7 @@ export default function Settings() {
                     message: 'Bilgileriniz güncellendi',
                     position: 'bottom-center',
                     withCloseButton: false,
-                  })
+                })
                 console.log('Kullanıcı bilgileri güncellendi');
             }
             console.log('Kullanıcı bilgileri güncelleniyor:', values);
@@ -105,7 +105,34 @@ export default function Settings() {
         setIsEditing(false);
     };
 
-    const handlePasswordUpdate = (values: typeof passwordForm.values) => {
+    const handlePasswordUpdate = async (values: typeof passwordForm.values) => {
+        const res = await fetch('http://127.0.0.1:5000/api/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                current_password: values.currentPassword,
+                new_password: values.newPassword
+            })
+        });
+        if (res.ok) {
+            notifications.show({
+                title: 'İşlem Başarılı',
+                message: 'Şifreniz güncellendi',
+                position: 'bottom-center',
+                withCloseButton: false,
+            })
+            passwordForm.reset();
+        } else if (res.status === 400) {
+            notifications.show({
+                title: 'İşlem Basarisiz',
+                message: 'Mevcut sifreniz yanlis',
+                position: 'bottom-center',
+                withCloseButton: false,
+            })
+        }
         // Şifre güncelleme işlemi burada yapılacak
         console.log('Şifre güncelleniyor:', values);
     };
