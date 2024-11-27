@@ -1,5 +1,5 @@
 import { Button, Flex, Paper, Text } from "@mantine/core"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function Home() {
   const navigate = useNavigate();

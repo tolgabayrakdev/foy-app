@@ -1,7 +1,7 @@
 import { useEffect, useState, ComponentType } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Text, Group } from '@mantine/core';
-import Loading from '../components/Loading';
+import Loading from '../components/loading';
+import { useNavigate } from 'react-router';
 
 // Props tipi için generic bir interface
 interface WithAuthProps {
