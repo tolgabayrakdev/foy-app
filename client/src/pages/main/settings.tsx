@@ -1,5 +1,6 @@
 import { Box, Button, Card, PasswordInput, TextInput, Title, Stack, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 
 interface UserData {
@@ -28,14 +29,14 @@ export default function Settings() {
                 const response = await fetch('http://127.0.0.1:5000/api/auth/verify', {
                     credentials: 'include',
                 });
-                
+
                 if (!response.ok) {
                     throw new Error('Kullanıcı bilgileri alınamadı');
                 }
 
                 const data = await response.json();
                 setUserData(data);
-                
+
                 userForm.setValues({
                     fullName: data.username,
                     email: data.email,
@@ -63,8 +64,29 @@ export default function Settings() {
     });
 
     const handleUserUpdate = async (values: typeof userForm.values) => {
+        console.log(values);
+        
         try {
-            // API çağrısı burada yapılacak
+            const res = await fetch('http://127.0.0.1:5000/api/update-user', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    username: values.fullName,
+                    email: values.email
+                })
+            });
+            if (res.ok) {
+                notifications.show({
+                    title: 'İşlem Başarılı',
+                    message: 'Bilgileriniz güncellendi',
+                    position: 'bottom-center',
+                    withCloseButton: false,
+                  })
+                console.log('Kullanıcı bilgileri güncellendi');
+            }
             console.log('Kullanıcı bilgileri güncelleniyor:', values);
             setIsEditing(false); // Başarılı güncelleme sonrası edit modunu kapat
         } catch (error) {
@@ -91,7 +113,7 @@ export default function Settings() {
     return (
         <Box p="md">
             <Title order={2} mb="lg">Ayarlar</Title>
-            
+
             <Card withBorder mb="lg">
                 <Title order={3} mb="md">Profil Bilgileri</Title>
                 <form onSubmit={userForm.onSubmit(handleUserUpdate)}>
