@@ -5,6 +5,7 @@ from .exceptions import AppException
 
 # controllers
 from .controller.auth_controller import auth_controller
+from .controller.user_controller import user_controller
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://root:root@localhost:5432/postgres"
@@ -22,6 +23,7 @@ with app.app_context():
 CORS(app, supports_credentials=True)
 
 app.register_blueprint(auth_controller, url_prefix="/api/auth")
+app.register_blueprint(user_controller, url_prefix="/api")
 
 if __name__ == "__main__":
     app.run(debug=True)
