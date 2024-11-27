@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TextInput, PasswordInput, Button, Anchor, Paper, Title, Container, Flex, Alert } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { AlertCircle } from 'lucide-react';
 
 const SignIn = () => {
     const navigate = useNavigate();
