@@ -10,7 +10,3 @@ class User(db.Model):
     password: Mapped[str]
 
 
-class Post(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str]
-    content: Mapped[str]
