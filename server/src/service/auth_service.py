@@ -1,5 +1,4 @@
 from marshmallow import ValidationError
-
 from ..model import db, User
 from ..exceptions import AppException
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,23 +9,27 @@ import jwt
 schema = UserRegistrationSchema()
 login_schema = LoginSchema()
 
+
 class AuthService:
     @staticmethod
-    def register(username: str, email: str, password: str):
+    def register(data):
         try:
-            validated_data = schema.load({"username": username, "email": email, "password": password})
-            username = validated_data['username']
-            email = validated_data['email']
-            password = validated_data['password']
-
-            if User.query.filter_by(username=username).first():
-                raise AppException("User already exists", 400)
+            validated_data = schema.load(data)
+            first_name = validated_data["first_name"]
+            last_name = validated_data["last_name"]
+            email = validated_data["email"]
+            password = validated_data["password"]
 
             if User.query.filter_by(email=email).first():
                 raise AppException("Email already exists", 400)
 
             hashed_password = generate_password_hash(password)
-            user = User(username=username, email=email, password=hashed_password)
+            user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=hashed_password,
+            )
             db.session.add(user)
             db.session.commit()
             return user
@@ -37,15 +40,15 @@ class AuthService:
     def login(email: str, password: str):
         try:
             validated_data = login_schema.load({"email": email, "password": password})
-            email = validated_data['email']
-            password = validated_data['password']
+            email = validated_data["email"]
+            password = validated_data["password"]
 
             user = User.query.filter_by(email=email).first()
             if not user or not check_password_hash(user.password, password):
                 raise AppException("Invalid email or password", 401)
-
-            access_token = create_access_token(user.id)
-            refresh_token = create_refresh_token(user.id)
+            
+            access_token = create_access_token(str(user.id))
+            refresh_token = create_refresh_token(str(user.id))
             return {"access_token": access_token, "refresh_token": refresh_token}
         except ValidationError as e:
             raise AppException(e.messages, 400)
@@ -60,7 +63,12 @@ class AuthService:
             user = User.query.filter_by(id=user_id).first()
             if not user:
                 raise AppException("Unauthorized", 401)
-            return {"id": user.id, "username": user.username, "email": user.email}
+            return {
+                "id": user.id,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            }
         except AppException as e:
             raise AppException(e.message, e.status_code)
         except Exception as e:
@@ -83,4 +91,3 @@ class AuthService:
             raise AppException("Invalid token", 401)
         except Exception as e:
             raise AppException(str(e), 500)
-

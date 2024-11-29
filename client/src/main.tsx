@@ -14,7 +14,7 @@ const MainLayout = lazy(() => import('./layouts/main-layout'));
 const MainIndex = lazy(() => import('./pages/main/index'));
 const MainSettings = lazy(() => import('./pages/main/settings'));
 
-const Home = lazy(() => import('./pages/home'));
+const Home = lazy(() => import('./pages/Home'));
 const NotFound = lazy(() => import('./pages/error/not-found'));
 
 createRoot(document.getElementById('root')!).render(

@@ -1,6 +1,11 @@
+from marshmallow import ValidationError
+from ..schema.student_schema import StudentCreateSchema, StudentUpdateSchema
 from ..model import db, Student
 from ..exceptions import AppException
 from sqlalchemy.exc import SQLAlchemyError
+
+create_schema = StudentCreateSchema()
+update_schema = StudentUpdateSchema()
 
 
 class StudentService:
@@ -10,7 +15,7 @@ class StudentService:
         Tüm öğrencileri getirir.
         """
         return Student.query.filter_by(user_id=user_id).all()
-    
+
     @staticmethod
     def get_student_by_id(student_id):
         """
@@ -28,23 +33,18 @@ class StudentService:
         Transaction kullanılarak kaydedilir.
         """
         try:
-            new_student = Student(
-                first_name=data.get("first_name"),
-                last_name=data.get("last_name"),
-                phone_number=data.get("phone_number"),
-                email=data.get("email"),
-                date_of_birth=data.get("date_of_birth"),
-                gender=data.get("gender"),
-                grade=data.get("grade"),
-                parent_name=data.get("parent_name"),
-                parent_contact=data.get("parent_contact"),
-                special_conditions=data.get("special_conditions"),
-                notes=data.get("notes"),
-            )
-            # Transaction başlangıcı
+            data = create_schema.load(data)
+
+            # Dinamik olarak 'Student' modelinin alanlarıyla eşleşen veriyi al
+            student_data = {
+                key: data.get(key) for key in data if key in Student.__table__.columns
+            }
+            new_student = Student(**student_data)
+
             with db.session.begin_nested():
                 db.session.add(new_student)
                 db.session.commit()
+
             return new_student
         except SQLAlchemyError as e:
             db.session.rollback()  # Hata durumunda geri al
@@ -58,14 +58,20 @@ class StudentService:
         """
         try:
             student = StudentService.get_student_by_id(student_id)
-            for key, value in data.items():
-                if hasattr(student, key):
-                    setattr(student, key, value)
 
-            # Transaction başlangıcı
+            validated_data = update_schema.load(data)
+
+            # Güncellenebilir alanları dinamik olarak atıyoruz
+            for key, value in validated_data.items():
+                if hasattr(student, key):  # Eğer öğrenci modelinde böyle bir alan varsa
+                    setattr(student, key, value)  # Alanı güncelle
+
             with db.session.begin_nested():
                 db.session.commit()
+
             return student
+        except ValidationError as e:
+            raise AppException(e.messages, 400)
         except SQLAlchemyError as e:
             db.session.rollback()  # Hata durumunda geri al
             raise AppException(f"Öğrenci güncellenemedi: {str(e)}", 500)

@@ -1,52 +1,43 @@
-from marshmallow import Schema, fields, validates, ValidationError
+from marshmallow import Schema, fields, validate
 import re
+
+# Email regex pattern (basit bir email doğrulaması)
+EMAIL_REGEX = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
 
 class UserRegistrationSchema(Schema):
-    username = fields.String(
+    first_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    last_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    email = fields.Email(
         required=True,
-        error_messages={'required': 'Username is required'}
+        validate=[
+            validate.Length(min=6, max=100),  # Email uzunluğu kontrolü
+            validate.Regexp(
+                EMAIL_REGEX, error="Invalid email format"
+            ),  # Regex kontrolü
+        ],
     )
-    email = fields.String(
+    password = fields.Str(
         required=True,
-        error_messages={'required': 'Email is required'}
+        validate=validate.Length(
+            min=6, error="Password must be at least 6 characters"
+        ),  # Minimum 6 karakter
     )
-    password = fields.String(
-        required=True,
-        error_messages={
-            'required': 'Password is required',
-        }
-    )
-
-    @validates('username')
-    def validate_username(self, value):
-        if not (3 <= len(value) <= 15):
-            raise ValidationError("Username must be between 3 and 15 characters")
-
-    @validates('email')
-    def validate_email(self, value):
-        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        if not re.match(email_regex, value):
-            raise ValidationError("Invalid email format")
-
-    @validates('password')
-    def validate_password(self, value):
-        if len(value) < 8:
-            raise ValidationError("Password must be at least 8 characters")
 
 
 class LoginSchema(Schema):
-    email = fields.String(
+    email = fields.Email(
         required=True,
-        error_messages={'required': 'Email is required'}
+        validate=[
+            validate.Length(min=6, max=100),  # Email uzunluğu kontrolü
+            validate.Regexp(
+                EMAIL_REGEX, error="Invalid email format"
+            ),  # Regex kontrolü
+        ],
     )
-    password = fields.String(
+    password = fields.Str(
         required=True,
-        error_messages={'required': 'Password is required'}
+        validate=validate.Length(
+            min=6, error="Password must be at least 6 characters"
+        ),  # Minimum 6 karakter
     )
-
-    @validates('email')
-    def validate_email(self, value):
-        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        if not re.match(email_regex, value):
-            raise ValidationError("Invalid email format")
