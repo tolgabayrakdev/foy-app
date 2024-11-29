@@ -1,4 +1,4 @@
-import { Flex, Loader, Text } from "@mantine/core";
+import { Flex, Loader, Text } from '@mantine/core';
 
 export default function loading() {
   return (
@@ -13,15 +13,12 @@ export default function loading() {
       align="center"
       style={{ zIndex: 1000 }}
     >
-      <Flex 
-        align="center" 
-        gap="xs"
-      >
+      <Flex align="center" gap="xs">
         <Loader size="xs" />
         <Text c="gray" size="sm">
           Yükleniyor...
         </Text>
       </Flex>
     </Flex>
-  )
+  );
 }

@@ -1,4 +1,13 @@
-import { AppShell, Burger, Group, Title, Menu, Button, rem, NavLink } from '@mantine/core';
+import {
+  AppShell,
+  Burger,
+  Group,
+  Title,
+  Menu,
+  Button,
+  rem,
+  NavLink,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import AuthProvider from '../providers/auth-provider';
 import { HomeIcon, LogOut, Settings } from 'lucide-react';
@@ -6,12 +15,11 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
 function MainLayout() {
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const handleLogout = async () => {
     try {
@@ -33,7 +41,7 @@ function MainLayout() {
         method: 'GET',
         credentials: 'include',
       });
-      const data = await response.json();      
+      const data = await response.json();
       if (response.ok) {
         setUserEmail(data.email);
       }
@@ -43,19 +51,19 @@ function MainLayout() {
   };
   useEffect(() => {
     handleUserVerify();
-  }, [])
+  }, []);
 
   const navItems = [
     {
       label: 'Main',
       path: '/main',
-      icon: <HomeIcon style={{ width: rem(16), height: rem(16) }} />
+      icon: <HomeIcon style={{ width: rem(16), height: rem(16) }} />,
     },
     {
       label: 'Ayarlar',
       path: '/main/settings',
-      icon: <Settings style={{ width: rem(16), height: rem(16) }} />
-    }
+      icon: <Settings style={{ width: rem(16), height: rem(16) }} />,
+    },
   ];
 
   return (
@@ -71,28 +79,40 @@ function MainLayout() {
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Group>
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Burger
+              opened={desktopOpened}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              size="sm"
+            />
             <Title order={2}>Foy</Title>
           </Group>
 
           <Menu shadow="md" width={200}>
             <Menu.Target>
-              <Button variant="subtle">
-                {userEmail}
-              </Button>
+              <Button variant="subtle">{userEmail}</Button>
             </Menu.Target>
 
             <Menu.Dropdown>
               <Menu.Item
-                leftSection={<Settings style={{ width: rem(14), height: rem(14) }} />}
+                leftSection={
+                  <Settings style={{ width: rem(14), height: rem(14) }} />
+                }
                 onClick={() => navigate('/main/settings')}
               >
                 Ayarlar
               </Menu.Item>
 
               <Menu.Item
-                leftSection={<LogOut style={{ width: rem(14), height: rem(14) }} />}
+                leftSection={
+                  <LogOut style={{ width: rem(14), height: rem(14) }} />
+                }
                 onClick={handleLogout}
                 color="red"
               >
@@ -114,8 +134,8 @@ function MainLayout() {
               root: {
                 '&[dataActive]': {
                   backgroundColor: 'var(--mantine-primary-color-light)',
-                }
-              }
+                },
+              },
             }}
           />
         ))}

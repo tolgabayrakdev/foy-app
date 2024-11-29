@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   TextInput,
   PasswordInput,
@@ -9,10 +9,10 @@ import {
   Container,
   Flex,
   Alert,
-} from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router";
-import { AlertCircle } from "lucide-react";
+} from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useNavigate } from 'react-router';
+import { AlertCircle } from 'lucide-react';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -21,13 +21,13 @@ const SignIn = () => {
 
   const form = useForm({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validate: {
-      email: (value) => (/\S+@\S+\.\S+/.test(value) ? null : "Geçersiz email"),
+      email: (value) => (/\S+@\S+\.\S+/.test(value) ? null : 'Geçersiz email'),
       password: (value) =>
-        value.length >= 6 ? null : "Şifre en az 6 karakter olmalı",
+        value.length >= 6 ? null : 'Şifre en az 6 karakter olmalı',
     },
   });
 
@@ -41,12 +41,12 @@ const SignIn = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/auth/login", {
-        method: "POST",
+      const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify({
           email: form.values.email,
           password: form.values.password,
@@ -57,10 +57,10 @@ const SignIn = () => {
 
       if (response.ok) {
         // Başarılı login
-        navigate("/main");
+        navigate('/main');
       } else {
         // Backend'den gelen hata mesajını göster
-        setError(data.message || "Email veya sifre yanlış");
+        setError(data.message || 'Email veya sifre yanlış');
       }
     } catch (err) {
       setError(`Sunucu hatası, detaylar: ${err}`);
@@ -70,7 +70,7 @@ const SignIn = () => {
   };
 
   return (
-    <Flex justify="center" align="center" style={{ minHeight: "100vh" }}>
+    <Flex justify="center" align="center" style={{ minHeight: '100vh' }}>
       <Container size={420} w="100%">
         <Paper p="lg" radius="md">
           <Title ta="center" mb={30}>
@@ -93,7 +93,7 @@ const SignIn = () => {
               label="Email"
               placeholder="youremail@example.com"
               required
-              {...form.getInputProps("email")}
+              {...form.getInputProps('email')}
               disabled={loading}
             />
 
@@ -102,7 +102,7 @@ const SignIn = () => {
               placeholder="Şifrenizi girin"
               required
               mt="md"
-              {...form.getInputProps("password")}
+              {...form.getInputProps('password')}
               disabled={loading}
             />
 
@@ -116,7 +116,7 @@ const SignIn = () => {
             href="/sign-up"
             mt="sm"
             size="sm"
-            style={{ display: "block", textAlign: "center" }}
+            style={{ display: 'block', textAlign: 'center' }}
           >
             Hesabınız yok mu? Kayıt olun
           </Anchor>
