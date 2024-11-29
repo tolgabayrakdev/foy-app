@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, ForeignKey, DateTime, Text
+from sqlalchemy import String, ForeignKey, Text, UUID
 from datetime import datetime
+import uuid
 
 db = SQLAlchemy()
 
@@ -9,7 +10,9 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
     first_name: Mapped[str] = mapped_column(String(50))
     last_name: Mapped[str] = mapped_column(String(50))
     phone_number: Mapped[str] = mapped_column(String(15))
@@ -31,7 +34,9 @@ class User(db.Model):
 class Student(db.Model):
     __tablename__ = "students"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
     first_name: Mapped[str] = mapped_column(String(50))
     last_name: Mapped[str] = mapped_column(String(50))
     phone_number: Mapped[str] = mapped_column(String(15))
@@ -69,21 +74,21 @@ class Student(db.Model):
 class Program(db.Model):
     __tablename__ = "programs"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
     student_id: Mapped[int] = mapped_column(
         ForeignKey("students.id"), nullable=False, unique=True
     )
-    name: Mapped[str] = mapped_column(
-        String(100), nullable=False
-    )  # Örneğin, özel ders programı adı
-    description: Mapped[str] = mapped_column(Text, nullable=True)  # Programın detayları
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=True)
     start_date: Mapped[datetime] = mapped_column(nullable=False)
     end_date: Mapped[datetime] = mapped_column(nullable=True)
-    progress: Mapped[float] = mapped_column(default=0.0)  # İlerleme yüzdesi
+    progress: Mapped[float] = mapped_column(default=0.0)
     status: Mapped[str] = mapped_column(
         default="active"
     )  # Program durumu (Aktif, Tamamlandı, İptal)
-    notes: Mapped[str] = mapped_column(Text)  # Öğretmen notları veya özel bilgiler
+    notes: Mapped[str] = mapped_column(Text)
 
     student: Mapped["Student"] = relationship("Student", back_populates="program")
 
